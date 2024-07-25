@@ -18,4 +18,7 @@ public class Set
     
     [Required]
     public string WeightType { get; set; }
+    
+    public ExerciseTerm ExerciseTerm { get; set; }
+    public int ExerciseTermId { get; set; }
 }

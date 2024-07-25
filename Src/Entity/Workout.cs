@@ -9,4 +9,6 @@ public class Workout
     
     [Required]
     public string Name { get; set; }
+
+    public List<Exercise> Exercises { get; set; } = new List<Exercise>();
 }

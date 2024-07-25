@@ -12,4 +12,9 @@ public class Exercise
 
     [Required]
     public int PauseDuration { get; set; }
+    
+    public Workout Workout { get; set; }
+    public int WorkoutId { get; set; }
+
+    public List<ExerciseTerm> ExerciseTerms { get; set; } = new List<ExerciseTerm>();
 }
