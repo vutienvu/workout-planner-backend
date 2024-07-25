@@ -1,0 +1,6 @@
+@WorkoutPlanner_HostAddress = http://localhost:5249
+
+GET {{WorkoutPlanner_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
