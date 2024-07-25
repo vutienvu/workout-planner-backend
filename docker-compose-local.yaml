@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  localdb:
+    build: Src/Docker
+    container_name: workoutplanner-mysql
+    command: --authentication_policy=caching_sha2_password
+    env_file:
+      - .env.localdb
+    ports:
+      - '3306:3306'
+    volumes:
+      - .docker/db/mysql.cnf:/etc/mysql/conf.d/alternatives/mysql.cnf
+    networks:
+      - internal
+
+networks:
+  internal:
