@@ -47,5 +47,19 @@ public class WorkoutController(IWorkoutService workoutService) : ControllerBase
         {
             return NotFound(e.Message);
         }
-    } 
+    }
+
+    [HttpPut("{workoutId}")]
+    public async Task<IActionResult> UpdateWorkoutById(int workoutId, string newName = "")
+    {
+        try
+        {
+            await workoutService.UpdateWorkoutById(workoutId, newName);
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    }
 }

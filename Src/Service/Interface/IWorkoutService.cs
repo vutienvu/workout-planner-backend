@@ -9,4 +9,5 @@ public interface IWorkoutService
     public Task<WorkoutResponse> CreateWorkout(WorkoutRequest workoutRequest);
     public Task<WorkoutResponse> GetWorkoutById(int workoutId);
     public Task DeleteWorkoutById(int workoutId);
+    public Task UpdateWorkoutById(int workoutId, string newName);
 }

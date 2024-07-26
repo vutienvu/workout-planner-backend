@@ -76,4 +76,17 @@ public class WorkoutService(DatabaseContext databaseContext) : IWorkoutService
         databaseContext.Workouts.Remove(workout);
         await databaseContext.SaveChangesAsync();
     }
+
+    public async Task UpdateWorkoutById(int workoutId, string newName)
+    {
+        var workout = await databaseContext.Workouts.SingleOrDefaultAsync(w => w.WorkoutId == workoutId);
+
+        if (workout == null)
+        {
+            throw new Exception("No workout with such id.");
+        }
+
+        workout.Name = newName;
+        await databaseContext.SaveChangesAsync();
+    }
 }
