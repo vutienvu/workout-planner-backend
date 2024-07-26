@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WorkoutPlanner.Helper;
+using WorkoutPlanner.Service;
+using WorkoutPlanner.Service.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,8 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
     options.UseSnakeCaseNamingConvention();
 });
+
+builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 
 var app = builder.Build();
 
