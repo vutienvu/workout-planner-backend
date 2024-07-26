@@ -46,4 +46,21 @@ public class WorkoutService(DatabaseContext databaseContext) : IWorkoutService
 
         return workoutResponse;
     }
+
+    public async Task<WorkoutResponse> GetWorkoutById(int workoutId)
+    {
+        var workout = await databaseContext.Workouts.SingleOrDefaultAsync(w => w.WorkoutId == workoutId);
+
+        if (workout == null)
+        {
+            throw new Exception("No workout with such id.");
+        }
+
+        var workoutResponse = new WorkoutResponse();
+
+        workoutResponse.WorkoutId = workout.WorkoutId;
+        workoutResponse.Name = workout.Name;
+
+        return workoutResponse;
+    }
 }

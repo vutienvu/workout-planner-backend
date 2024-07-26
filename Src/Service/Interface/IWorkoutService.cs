@@ -7,4 +7,5 @@ public interface IWorkoutService
 {
     public Task<List<WorkoutResponse>> GetAllWorkouts();
     public Task<WorkoutResponse> CreateWorkout(WorkoutRequest workoutRequest);
+    public Task<WorkoutResponse> GetWorkoutById(int workoutId);
 }
