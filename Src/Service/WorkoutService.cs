@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using WorkoutPlanner.Entity;
 using WorkoutPlanner.Helper;
+using WorkoutPlanner.Request;
 using WorkoutPlanner.Response;
 using WorkoutPlanner.Service.Interface;
 
@@ -24,5 +26,24 @@ public class WorkoutService(DatabaseContext databaseContext) : IWorkoutService
         }
         
         return workoutsDto;
+    }
+
+    public async Task<WorkoutResponse> CreateWorkout(WorkoutRequest workoutRequest)
+    {
+        var newWorkout = new Workout();
+
+        newWorkout.Name = workoutRequest.Name;
+        
+        var workoutEntity = await databaseContext.Workouts.AddAsync(newWorkout);
+        await databaseContext.SaveChangesAsync();
+
+        var workout = workoutEntity.Entity;
+        
+        var workoutResponse = new WorkoutResponse();
+
+        workoutResponse.WorkoutId = workout.WorkoutId;
+        workoutResponse.Name = workout.Name;
+
+        return workoutResponse;
     }
 }
