@@ -34,4 +34,18 @@ public class WorkoutController(IWorkoutService workoutService) : ControllerBase
             return NotFound(e.Message);
         }
     }
+
+    [HttpDelete("{workoutId}")]
+    public async Task<IActionResult> RemoveWorkoutById(int workoutId)
+    {
+        try
+        {
+            await workoutService.DeleteWorkoutById(workoutId);
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    } 
 }

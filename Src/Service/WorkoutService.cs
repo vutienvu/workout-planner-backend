@@ -63,4 +63,17 @@ public class WorkoutService(DatabaseContext databaseContext) : IWorkoutService
 
         return workoutResponse;
     }
+
+    public async Task DeleteWorkoutById(int workoutId)
+    {
+        var workout = await databaseContext.Workouts.SingleOrDefaultAsync(w => w.WorkoutId == workoutId);
+
+        if (workout == null)
+        {
+            throw new Exception("No workout with such id.");
+        }
+
+        databaseContext.Workouts.Remove(workout);
+        await databaseContext.SaveChangesAsync();
+    }
 }
