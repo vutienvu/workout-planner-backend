@@ -13,15 +13,8 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : I
     public async Task<List<WorkoutResponse>> GetAllWorkouts()
     {
         var workouts = await databaseContext.Workouts.ToListAsync();
-
-        var workoutsDto = new List<WorkoutResponse>();
-
-        foreach (var workout in workouts)
-        {
-            WorkoutResponse workoutResponse = mapper.Map<Workout, WorkoutResponse>(workout);
-            
-            workoutsDto.Add(workoutResponse);
-        }
+        
+        List<WorkoutResponse> workoutsDto = mapper.Map<List<Workout>, List<WorkoutResponse>>(workouts);
         
         return workoutsDto;
     }
