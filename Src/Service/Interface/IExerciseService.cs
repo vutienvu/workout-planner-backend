@@ -1,3 +1,4 @@
+using WorkoutPlanner.Request;
 using WorkoutPlanner.Response;
 
 namespace WorkoutPlanner.Service.Interface;
@@ -5,4 +6,5 @@ namespace WorkoutPlanner.Service.Interface;
 public interface IExerciseService
 {
     public Task<List<ExerciseResponse>> GetAllExercises();
+    public Task<ExerciseResponse> CreateExercise(ExerciseRequest exerciseRequest);
 }

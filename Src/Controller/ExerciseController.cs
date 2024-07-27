@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WorkoutPlanner.Request;
 using WorkoutPlanner.Service.Interface;
 
 namespace WorkoutPlanner.Controller;
@@ -11,5 +12,19 @@ public class ExerciseController(IExerciseService exerciseService) : ControllerBa
     public async Task<IActionResult> GetAllExercises()
     {
         return Ok(await exerciseService.GetAllExercises());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateExercise([FromBody] ExerciseRequest exerciseRequest)
+    {
+        try
+        {
+            var exerciseResponse = await exerciseService.CreateExercise(exerciseRequest);
+            return Ok(exerciseResponse);
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
     }
 }
