@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WorkoutPlanner.Helper;
+using WorkoutPlanner.Profile;
 using WorkoutPlanner.Service;
 using WorkoutPlanner.Service.Interface;
 
@@ -17,6 +18,8 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
     options.UseSnakeCaseNamingConvention();
 });
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 
