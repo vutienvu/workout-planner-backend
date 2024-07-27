@@ -10,5 +10,7 @@ public class MappingProfile : AutoMapper.Profile
     {
         CreateMap<Workout, WorkoutResponse>();
         CreateMap<WorkoutRequest, Workout>();
+
+        CreateMap<Exercise, ExerciseResponse>();
     }
 }
