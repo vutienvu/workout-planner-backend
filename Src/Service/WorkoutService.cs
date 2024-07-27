@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WorkoutPlanner.Entity;
 using WorkoutPlanner.Helper;
@@ -7,7 +8,7 @@ using WorkoutPlanner.Service.Interface;
 
 namespace WorkoutPlanner.Service;
 
-public class WorkoutService(DatabaseContext databaseContext) : IWorkoutService
+public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : IWorkoutService
 {
     public async Task<List<WorkoutResponse>> GetAllWorkouts()
     {
@@ -17,12 +18,9 @@ public class WorkoutService(DatabaseContext databaseContext) : IWorkoutService
 
         foreach (var workout in workouts)
         {
-            var workoutDto = new WorkoutResponse();
-
-            workoutDto.WorkoutId = workout.WorkoutId;
-            workoutDto.Name = workout.Name;
+            WorkoutResponse workoutResponse = mapper.Map<Workout, WorkoutResponse>(workout);
             
-            workoutsDto.Add(workoutDto);
+            workoutsDto.Add(workoutResponse);
         }
         
         return workoutsDto;
@@ -39,11 +37,8 @@ public class WorkoutService(DatabaseContext databaseContext) : IWorkoutService
 
         var workout = workoutEntity.Entity;
         
-        var workoutResponse = new WorkoutResponse();
-
-        workoutResponse.WorkoutId = workout.WorkoutId;
-        workoutResponse.Name = workout.Name;
-
+        WorkoutResponse workoutResponse = mapper.Map<Workout, WorkoutResponse>(workout);
+        
         return workoutResponse;
     }
 
@@ -55,12 +50,9 @@ public class WorkoutService(DatabaseContext databaseContext) : IWorkoutService
         {
             throw new Exception("No workout with such id.");
         }
-
-        var workoutResponse = new WorkoutResponse();
-
-        workoutResponse.WorkoutId = workout.WorkoutId;
-        workoutResponse.Name = workout.Name;
-
+        
+        WorkoutResponse workoutResponse = mapper.Map<Workout, WorkoutResponse>(workout);
+        
         return workoutResponse;
     }
 
