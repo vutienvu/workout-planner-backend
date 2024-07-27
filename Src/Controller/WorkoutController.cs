@@ -50,11 +50,11 @@ public class WorkoutController(IWorkoutService workoutService) : ControllerBase
     }
 
     [HttpPut("{workoutId}")]
-    public async Task<IActionResult> UpdateWorkoutById(int workoutId, string newName = "")
+    public async Task<IActionResult> UpdateWorkoutById(int workoutId, [FromBody] WorkoutRequest workoutRequest)
     {
         try
         {
-            await workoutService.UpdateWorkoutById(workoutId, newName);
+            await workoutService.UpdateWorkoutById(workoutId, workoutRequest);
             return NoContent();
         }
         catch (Exception e)

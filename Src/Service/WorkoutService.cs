@@ -69,7 +69,7 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : I
         await databaseContext.SaveChangesAsync();
     }
 
-    public async Task UpdateWorkoutById(int workoutId, string newName)
+    public async Task UpdateWorkoutById(int workoutId, WorkoutRequest workoutRequest)
     {
         var workout = await databaseContext.Workouts.SingleOrDefaultAsync(w => w.WorkoutId == workoutId);
 
@@ -78,7 +78,7 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : I
             throw new Exception("No workout with such id.");
         }
 
-        workout.Name = newName;
+        workout.Name = workoutRequest.Name;
         await databaseContext.SaveChangesAsync();
     }
 }
