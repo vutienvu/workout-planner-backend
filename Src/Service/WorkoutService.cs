@@ -28,9 +28,7 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : I
 
     public async Task<WorkoutResponse> CreateWorkout(WorkoutRequest workoutRequest)
     {
-        var newWorkout = new Workout();
-
-        newWorkout.Name = workoutRequest.Name;
+        Workout newWorkout = mapper.Map<WorkoutRequest, Workout>(workoutRequest);
         
         var workoutEntity = await databaseContext.Workouts.AddAsync(newWorkout);
         await databaseContext.SaveChangesAsync();
@@ -77,8 +75,8 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : I
         {
             throw new Exception("No workout with such id.");
         }
-
-        workout.Name = workoutRequest.Name;
+        
+        mapper.Map(workoutRequest, workout);
         await databaseContext.SaveChangesAsync();
     }
 }
