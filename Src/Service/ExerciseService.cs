@@ -52,4 +52,17 @@ public class ExerciseService(DatabaseContext databaseContext, IMapper mapper) : 
         databaseContext.Exercises.Remove(exercise);
         await databaseContext.SaveChangesAsync();
     }
+
+    public async Task UpdateExerciseById(int exerciseId, ExerciseRequest exerciseRequest)
+    {
+        var exercise = await databaseContext.Exercises.SingleOrDefaultAsync(e => e.ExerciseId == exerciseId);
+
+        if (exercise == null)
+        {
+            throw new Exception("No exercise with such id.");
+        }
+
+        mapper.Map(exerciseRequest, exercise);
+        await databaseContext.SaveChangesAsync();
+    }
 }

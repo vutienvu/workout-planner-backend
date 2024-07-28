@@ -40,5 +40,19 @@ public class ExerciseController(IExerciseService exerciseService) : ControllerBa
         {
             return NotFound(e.Message);
         }
-    } 
+    }
+
+    [HttpPut("{exerciseId}")]
+    public async Task<IActionResult> UpdateExerciseById(int exerciseId, [FromBody] ExerciseRequest exerciseRequest)
+    {
+        try
+        {
+            await exerciseService.UpdateExerciseById(exerciseId, exerciseRequest);
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    }
 }
