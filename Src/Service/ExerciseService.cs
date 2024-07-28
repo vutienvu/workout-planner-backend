@@ -39,4 +39,17 @@ public class ExerciseService(DatabaseContext databaseContext, IMapper mapper) : 
 
         return exerciseResponse;
     }
+
+    public async Task DeleteExerciseById(int exerciseId)
+    {
+        var exercise = await databaseContext.Exercises.SingleOrDefaultAsync(e => e.ExerciseId == exerciseId);
+
+        if (exercise == null)
+        {
+            throw new Exception("No exercise with such id.");
+        }
+
+        databaseContext.Exercises.Remove(exercise);
+        await databaseContext.SaveChangesAsync();
+    }
 }

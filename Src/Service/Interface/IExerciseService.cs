@@ -7,4 +7,5 @@ public interface IExerciseService
 {
     public Task<List<ExerciseResponse>> GetAllExercises();
     public Task<ExerciseResponse> CreateExercise(ExerciseRequest exerciseRequest);
+    public Task DeleteExerciseById(int exerciseId);
 }

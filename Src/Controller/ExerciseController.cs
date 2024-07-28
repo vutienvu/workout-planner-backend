@@ -27,4 +27,18 @@ public class ExerciseController(IExerciseService exerciseService) : ControllerBa
             return NotFound(e.Message);
         }
     }
+
+    [HttpDelete("{exerciseId}")]
+    public async Task<IActionResult> RemoveExerciseById(int exerciseId)
+    {
+        try
+        {
+            await exerciseService.DeleteExerciseById(exerciseId);
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    } 
 }
