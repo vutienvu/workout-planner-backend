@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace WorkoutPlanner.Entity;
 
@@ -11,6 +12,7 @@ public class Set
     public int Reps { get; set; }
     
     [Required]
+    [Precision(6, 2)]
     public float Weight { get; set; }
     
     [Required]

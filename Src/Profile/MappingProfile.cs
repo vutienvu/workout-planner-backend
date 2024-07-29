@@ -16,5 +16,8 @@ public class MappingProfile : AutoMapper.Profile
 
         CreateMap<ExerciseTerm, ExerciseTermResponse>();
         CreateMap<ExerciseTermRequest, ExerciseTerm>();
+
+        CreateMap<Set, SetResponse>();
+        CreateMap<SetRequest, Set>();
     }
 }

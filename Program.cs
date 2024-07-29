@@ -24,6 +24,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
 builder.Services.AddScoped<IExerciseTermService, ExerciseTermService>();
+builder.Services.AddScoped<ISetService, SetService>();
 
 var app = builder.Build();
 
