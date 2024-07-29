@@ -12,7 +12,7 @@ public class ExerciseService(DatabaseContext databaseContext, IMapper mapper) : 
 {
     public async Task<List<ExerciseResponse>> GetAllExercises()
     {
-        var exercises = await databaseContext.Exercises.ToListAsync();
+        var exercises = await databaseContext.Exercises.Include(e => e.ExerciseTerms).ToListAsync();
 
         List<ExerciseResponse> exercisesResponse = mapper.Map<List<Exercise>, List<ExerciseResponse>>(exercises);
 

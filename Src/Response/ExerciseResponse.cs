@@ -6,4 +6,5 @@ public class ExerciseResponse
     public string Name { get; set; }
     public int PauseDuration { get; set; }
     public int WorkoutId { get; set; }
+    public List<ExerciseTermResponse> ExerciseTerms { get; set; }
 }
