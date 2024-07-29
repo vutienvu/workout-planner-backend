@@ -56,10 +56,16 @@ public class ExerciseService(DatabaseContext databaseContext, IMapper mapper) : 
     public async Task UpdateExerciseById(int exerciseId, ExerciseRequest exerciseRequest)
     {
         var exercise = await databaseContext.Exercises.SingleOrDefaultAsync(e => e.ExerciseId == exerciseId);
+        var workout = await databaseContext.Workouts.SingleOrDefaultAsync(w => w.WorkoutId == exerciseRequest.WorkoutId);
 
         if (exercise == null)
         {
             throw new Exception("No exercise with such id.");
+        }
+
+        if (workout == null)
+        {
+            throw new Exception("No workout with such id.");
         }
 
         mapper.Map(exerciseRequest, exercise);
