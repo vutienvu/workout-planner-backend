@@ -35,7 +35,7 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : I
 
     public async Task<WorkoutResponse> GetWorkoutById(int workoutId)
     {
-        var workout = await databaseContext.Workouts.SingleOrDefaultAsync(w => w.WorkoutId == workoutId);
+        var workout = await databaseContext.Workouts.Include(w => w.Exercises).SingleOrDefaultAsync(w => w.WorkoutId == workoutId);
 
         if (workout == null)
         {
