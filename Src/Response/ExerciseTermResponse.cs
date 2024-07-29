@@ -6,4 +6,5 @@ public class ExerciseTermResponse
     public DateTime TermDate { get; set; }
     public int TotalSets { get; set; }
     public int ExerciseId { get; set; }
+    public List<SetResponse> Sets { get; set; }
 }
