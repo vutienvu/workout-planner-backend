@@ -31,6 +31,7 @@ builder.Services.AddFluentValidationAutoValidation(configuration =>
 builder.Services.AddScoped<IValidator<WorkoutRequest>, WorkoutValidator>();
 builder.Services.AddScoped<IValidator<ExerciseRequest>, ExerciseValidator>();
 builder.Services.AddScoped<IValidator<ExerciseTermRequest>, ExerciseTermValidator>();
+builder.Services.AddScoped<IValidator<SetRequest>, SetValidator>();
 
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
