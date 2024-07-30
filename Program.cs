@@ -1,6 +1,9 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using WorkoutPlanner.Helper;
-using WorkoutPlanner.Profile;
+using WorkoutPlanner.Request;
+using WorkoutPlanner.Request.Validator;
 using WorkoutPlanner.Service;
 using WorkoutPlanner.Service.Interface;
 
@@ -20,6 +23,13 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+builder.Services.AddFluentValidationAutoValidation(configuration =>
+{
+    configuration.OverrideDefaultResultFactoryWith<RequestResultFactory>();
+});
+builder.Services.AddScoped<IValidator<WorkoutRequest>, WorkoutValidator>();
+builder.Services.AddScoped<IValidator<ExerciseRequest>, ExerciseValidator>();
 
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
