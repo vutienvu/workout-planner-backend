@@ -2,7 +2,7 @@ using WorkoutPlanner.Entity;
 using WorkoutPlanner.Request;
 using WorkoutPlanner.Response;
 
-namespace WorkoutPlanner.Profile;
+namespace WorkoutPlanner.Helper;
 
 public class MappingProfile : AutoMapper.Profile
 {
