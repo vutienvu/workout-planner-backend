@@ -21,13 +21,6 @@ public class SetService(DatabaseContext databaseContext, IMapper mapper) : ISetS
 
     public async Task<SetResponse> CreateSet(SetRequest setRequest)
     {
-        var exerciseTerm = await databaseContext.ExerciseTerms.SingleOrDefaultAsync(et => et.ExerciseTermId == setRequest.ExerciseTermId);
-
-        if (exerciseTerm == null)
-        {
-            throw new Exception("No exercise term with such id.");
-        }
-
         Set newSet = mapper.Map<SetRequest, Set>(setRequest);
 
         var setEntity = await databaseContext.Sets.AddAsync(newSet);
@@ -56,16 +49,10 @@ public class SetService(DatabaseContext databaseContext, IMapper mapper) : ISetS
     public async Task UpdateSetById(int setId, SetRequest setRequest)
     {
         var set = await databaseContext.Sets.SingleOrDefaultAsync(s => s.SetId == setId);
-        var exerciseTerm = await databaseContext.ExerciseTerms.SingleOrDefaultAsync(et => et.ExerciseTermId == setRequest.ExerciseTermId);
 
         if (set == null)
         {
             throw new Exception("No set with such id.");
-        }
-
-        if (exerciseTerm == null)
-        {
-            throw new Exception("No exercise term with such id.");
         }
 
         mapper.Map(setRequest, set);

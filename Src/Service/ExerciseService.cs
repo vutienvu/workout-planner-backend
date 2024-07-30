@@ -21,13 +21,6 @@ public class ExerciseService(DatabaseContext databaseContext, IMapper mapper) : 
 
     public async Task<ExerciseResponse> CreateExercise(ExerciseRequest exerciseRequest)
     {
-        var workout = await databaseContext.Workouts.SingleOrDefaultAsync(w => w.WorkoutId == exerciseRequest.WorkoutId);
-
-        if (workout == null)
-        {
-            throw new Exception("No workout with such id.");
-        }
-
         Exercise newExercise = mapper.Map<ExerciseRequest, Exercise>(exerciseRequest);
 
         var exerciseEntity = await databaseContext.Exercises.AddAsync(newExercise);
@@ -56,16 +49,10 @@ public class ExerciseService(DatabaseContext databaseContext, IMapper mapper) : 
     public async Task UpdateExerciseById(int exerciseId, ExerciseRequest exerciseRequest)
     {
         var exercise = await databaseContext.Exercises.SingleOrDefaultAsync(e => e.ExerciseId == exerciseId);
-        var workout = await databaseContext.Workouts.SingleOrDefaultAsync(w => w.WorkoutId == exerciseRequest.WorkoutId);
 
         if (exercise == null)
         {
             throw new Exception("No exercise with such id.");
-        }
-
-        if (workout == null)
-        {
-            throw new Exception("No workout with such id.");
         }
 
         mapper.Map(exerciseRequest, exercise);
