@@ -1,4 +1,4 @@
-namespace Test;
+namespace WorkoutPlanner.Test;
 
 public class UnitTest1
 {
