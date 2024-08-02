@@ -24,8 +24,29 @@
         <PackageReference Include="SharpGrip.FluentValidation.AutoValidation.Mvc" Version="1.4.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <Content Remove="WorkoutPlanner.Tests\**" />
+        <Content Remove="Tests\**" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="Tests\obj\WorkoutPlanner.Tests.csproj.nuget.dgspec.json" />
+        <_ContentIncludedByDefault Remove="Tests\obj\project.assets.json" />
+        <_ContentIncludedByDefault Remove="Tests\obj\project.packagespec.json" />
+        <_ContentIncludedByDefault Remove="Tests\bin\Debug\net8.0\WorkoutPlanner.Tests.deps.json" />
+        <_ContentIncludedByDefault Remove="Tests\bin\Debug\net8.0\WorkoutPlanner.Tests.runtimeconfig.json" />
+    </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="Test/Test.csproj" />
+        <Compile Remove="WorkoutPlanner.Tests\**" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <EmbeddedResource Remove="WorkoutPlanner.Tests\**" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Remove="WorkoutPlanner.Tests\**" />
     </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
-namespace WorkoutPlanner.Test;
+using AutoMapper;
+namespace WorkoutPlanner.Tests;
 
 public class UnitTest1
 {
