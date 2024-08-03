@@ -17,7 +17,6 @@ public class WorkoutControllerTests
         _workoutController = new WorkoutController(_mockWorkoutService.Object);
     }
     
-    
     [Fact]
     public async void GetAllWorkouts_ValidFlow_ReturnsOkWithListOfWorkoutResponses()
     {
@@ -42,4 +41,41 @@ public class WorkoutControllerTests
         }
     }
 
+    [Fact]
+    public async void GetWorkoutById_ValidWorkoutId_ReturnsOkWithWorkoutResponse()
+    {
+        // Arrange
+        int validWorkoutId = 1;
+        var expectedWorkoutResponse = new WorkoutResponse() { WorkoutId = validWorkoutId, Name = "Running" };
+
+        _mockWorkoutService.Setup(ws => ws.GetWorkoutById(validWorkoutId)).ReturnsAsync(expectedWorkoutResponse);
+        
+        // Act
+        var actualResponse = await _workoutController.GetWorkoutById(validWorkoutId);
+        
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(actualResponse);
+        var returnedWorkout = Assert.IsType<WorkoutResponse>(okResult.Value);
+        
+        Assert.Equal(expectedWorkoutResponse.WorkoutId, returnedWorkout.WorkoutId);
+        Assert.Equal(expectedWorkoutResponse.Name, returnedWorkout.Name);
+    }
+
+    [Fact]
+    public async void GetWorkoutById_InvalidWorkoutId_ReturnsNotFoundWithExceptionMessage()
+    {
+        // Arrange
+        int invalidWorkoutId = 1;
+        var expectedException = new Exception("No workout with such id.");
+
+        _mockWorkoutService.Setup(ws => ws.GetWorkoutById(invalidWorkoutId)).ThrowsAsync(expectedException);
+        
+        // Act
+        var actualResponse = await _workoutController.GetWorkoutById(invalidWorkoutId);
+
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(actualResponse);
+        var actualExceptionMessage = Assert.IsType<string>(notFoundResult.Value);
+        
+        Assert.Equal(expectedException.Message, actualExceptionMessage);
+    }
 }
