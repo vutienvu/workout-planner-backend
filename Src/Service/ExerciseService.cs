@@ -8,54 +8,50 @@ using WorkoutPlanner.Service.Interface;
 
 namespace WorkoutPlanner.Service;
 
-public class ExerciseService(DatabaseContext databaseContext, IMapper mapper) : IExerciseService
+public class ExerciseService(DatabaseContext databaseContext, IMapper mapper) : BaseService<Exercise>(databaseContext, mapper), IExerciseService
 {
     public async Task<List<ExerciseResponse>> GetAllExercises()
     {
-        var exercises = await databaseContext.Exercises.Include(e => e.ExerciseTerms).ToListAsync();
+        var exercises = await GetQueryable().Include(e => e.ExerciseTerms).ToListAsync();
 
-        List<ExerciseResponse> exercisesResponse = mapper.Map<List<Exercise>, List<ExerciseResponse>>(exercises);
+        List<ExerciseResponse> exercisesResponse = Mapper.Map<List<Exercise>, List<ExerciseResponse>>(exercises);
 
         return exercisesResponse;
     }
 
     public async Task<ExerciseResponse> CreateExercise(ExerciseRequest exerciseRequest)
     {
-        Exercise newExercise = mapper.Map<ExerciseRequest, Exercise>(exerciseRequest);
+        Exercise newExercise = Mapper.Map<ExerciseRequest, Exercise>(exerciseRequest);
 
-        var exerciseEntity = await databaseContext.Exercises.AddAsync(newExercise);
-        await databaseContext.SaveChangesAsync();
+        var exercise = await CreateAsync(newExercise);
         
-        var exercise = exerciseEntity.Entity;
-
-        ExerciseResponse exerciseResponse = mapper.Map<Exercise, ExerciseResponse>(exercise);
+        ExerciseResponse exerciseResponse = Mapper.Map<Exercise, ExerciseResponse>(exercise);
 
         return exerciseResponse;
     }
 
     public async Task DeleteExerciseById(int exerciseId)
     {
-        var exercise = await databaseContext.Exercises.SingleOrDefaultAsync(e => e.ExerciseId == exerciseId);
+        var exercise = await GetQueryable().SingleOrDefaultAsync(e => e.ExerciseId == exerciseId);
 
         if (exercise == null)
         {
             throw new Exception("No exercise with such id.");
         }
 
-        databaseContext.Exercises.Remove(exercise);
-        await databaseContext.SaveChangesAsync();
+        await RemoveAsync(exercise);
     }
 
     public async Task UpdateExerciseById(int exerciseId, ExerciseRequest exerciseRequest)
     {
-        var exercise = await databaseContext.Exercises.SingleOrDefaultAsync(e => e.ExerciseId == exerciseId);
+        var exercise = await GetQueryable().SingleOrDefaultAsync(e => e.ExerciseId == exerciseId);
 
         if (exercise == null)
         {
             throw new Exception("No exercise with such id.");
         }
 
-        mapper.Map(exerciseRequest, exercise);
-        await databaseContext.SaveChangesAsync();
+        Mapper.Map(exerciseRequest, exercise);
+        await SaveAsync();
     }
 }
