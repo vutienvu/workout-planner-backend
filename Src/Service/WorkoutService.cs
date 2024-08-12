@@ -12,11 +12,7 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : B
 {
     public async Task<List<WorkoutResponse>> GetAllWorkouts()
     {
-        var workouts = await GetQueryable().Include(w => w.Exercises).ToListAsync();
-        
-        List<WorkoutResponse> workoutsDto = Mapper.Map<List<Workout>, List<WorkoutResponse>>(workouts);
-        
-        return workoutsDto;
+        return await Mapper.ProjectTo<WorkoutResponse>(GetQueryable()).ToListAsync();
     }
 
     public async Task<WorkoutResponse> CreateWorkout(WorkoutRequest workoutRequest)
