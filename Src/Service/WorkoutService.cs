@@ -26,7 +26,7 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : B
         return workoutResponse;
     }
 
-    public async Task<WorkoutResponse> GetWorkoutById(int workoutId)
+    public async Task<WorkoutDetailResponse> GetWorkoutById(int workoutId)
     {
         var workout = await GetQueryable().Include(w => w.Exercises).SingleOrDefaultAsync(w => w.WorkoutId == workoutId);
 
@@ -34,10 +34,10 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : B
         {
             throw new Exception("No workout with such id.");
         }
+
+        WorkoutDetailResponse workoutDetailResponse = Mapper.Map<Workout, WorkoutDetailResponse>(workout);
         
-        WorkoutResponse workoutResponse = Mapper.Map<Workout, WorkoutResponse>(workout);
-        
-        return workoutResponse;
+        return workoutDetailResponse;
     }
 
     public async Task DeleteWorkoutById(int workoutId)
