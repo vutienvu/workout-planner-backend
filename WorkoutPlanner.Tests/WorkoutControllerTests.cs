@@ -46,19 +46,20 @@ public class WorkoutControllerTests
     {
         // Arrange
         int validWorkoutId = 1;
-        var expectedWorkoutResponse = new WorkoutResponse() { WorkoutId = validWorkoutId, Name = "Running" };
+        var expectedWorkoutDetailResponse = new WorkoutDetailResponse() { WorkoutId = validWorkoutId, Name = "Running", Exercises = [] };
 
-        _mockWorkoutService.Setup(ws => ws.GetWorkoutById(validWorkoutId)).ReturnsAsync(expectedWorkoutResponse);
+        _mockWorkoutService.Setup(ws => ws.GetWorkoutById(validWorkoutId)).ReturnsAsync(expectedWorkoutDetailResponse);
         
         // Act
         var actualResponse = await _workoutController.GetWorkoutById(validWorkoutId);
         
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(actualResponse);
-        var returnedWorkout = Assert.IsType<WorkoutResponse>(okResult.Value);
+        var returnedWorkout = Assert.IsType<WorkoutDetailResponse>(okResult.Value);
         
-        Assert.Equal(expectedWorkoutResponse.WorkoutId, returnedWorkout.WorkoutId);
-        Assert.Equal(expectedWorkoutResponse.Name, returnedWorkout.Name);
+        Assert.Equal(expectedWorkoutDetailResponse.WorkoutId, returnedWorkout.WorkoutId);
+        Assert.Equal(expectedWorkoutDetailResponse.Name, returnedWorkout.Name);
+        Assert.Equal(expectedWorkoutDetailResponse.Exercises.Count, returnedWorkout.Exercises.Count);
     }
 
     [Fact]
