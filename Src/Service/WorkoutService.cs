@@ -4,6 +4,7 @@ using WorkoutPlanner.Entity;
 using WorkoutPlanner.Helper;
 using WorkoutPlanner.Request;
 using WorkoutPlanner.Response;
+using WorkoutPlanner.Service.Exception;
 using WorkoutPlanner.Service.Interface;
 
 namespace WorkoutPlanner.Service;
@@ -26,7 +27,7 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : B
 
         if (workout == null)
         {
-            throw new Exception("No workout with such id.");
+            throw new WorkoutNotFoundException();
         }
 
         return workout;
@@ -49,7 +50,7 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : B
 
         if (workout == null)
         {
-            throw new Exception("No workout with such id.");
+            throw new WorkoutNotFoundException();
         }
 
         return workout;
