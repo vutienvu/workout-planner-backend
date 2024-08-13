@@ -14,6 +14,20 @@ public class ExerciseController(IExerciseService exerciseService) : ControllerBa
         return Ok(await exerciseService.GetAllExercises());
     }
 
+    [HttpGet("{exerciseId}")]
+    public async Task<IActionResult> GetExerciseById(int exerciseId)
+    {
+        try
+        {
+            var exerciseResponse = await exerciseService.GetExerciseById(exerciseId);
+            return Ok(exerciseResponse);
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+    
     [HttpPost]
     public async Task<IActionResult> CreateExercise([FromBody] ExerciseRequest exerciseRequest)
     {

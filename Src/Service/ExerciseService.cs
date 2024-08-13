@@ -12,11 +12,7 @@ public class ExerciseService(DatabaseContext databaseContext, IMapper mapper) : 
 {
     public async Task<List<ExerciseResponse>> GetAllExercises()
     {
-        var exercises = await GetQueryable().Include(e => e.ExerciseTerms).ToListAsync();
-
-        List<ExerciseResponse> exercisesResponse = Mapper.Map<List<Exercise>, List<ExerciseResponse>>(exercises);
-
-        return exercisesResponse;
+        return await Mapper.ProjectTo<ExerciseResponse>(GetQueryable()).ToListAsync();
     }
 
     public async Task<ExerciseResponse> CreateExercise(ExerciseRequest exerciseRequest)
@@ -26,6 +22,20 @@ public class ExerciseService(DatabaseContext databaseContext, IMapper mapper) : 
         var exercise = await CreateAsync(newExercise);
         
         ExerciseResponse exerciseResponse = Mapper.Map<Exercise, ExerciseResponse>(exercise);
+
+        return exerciseResponse;
+    }
+
+    public async Task<ExerciseDetailResponse> GetExerciseById(int exerciseId)
+    {
+        var exercise = await GetQueryable().Include(e => e.ExerciseTerms).SingleOrDefaultAsync(e => e.ExerciseId == exerciseId);
+
+        if (exercise == null)
+        {
+            throw new Exception("No exercise with such id.");
+        }
+
+        ExerciseDetailResponse exerciseResponse = Mapper.Map<Exercise, ExerciseDetailResponse>(exercise);
 
         return exerciseResponse;
     }
