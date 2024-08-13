@@ -17,13 +17,7 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : B
 
     public async Task<WorkoutResponse> CreateWorkout(WorkoutRequest workoutRequest)
     {
-        Workout newWorkout = Mapper.Map<WorkoutRequest, Workout>(workoutRequest);
-        
-        var workout = await CreateAsync(newWorkout);
-        
-        WorkoutResponse workoutResponse = Mapper.Map<Workout, WorkoutResponse>(workout);
-        
-        return workoutResponse;
+        return Mapper.Map<WorkoutResponse>(await CreateAsync(Mapper.Map<Workout>(workoutRequest)));
     }
 
     public async Task<WorkoutDetailResponse> GetWorkoutById(int workoutId)
@@ -40,17 +34,16 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : B
 
     public async Task DeleteWorkoutById(int workoutId)
     {
-        var workout = await GetQueryable().SingleOrDefaultAsync(w => w.WorkoutId == workoutId);
-
-        if (workout == null)
-        {
-            throw new Exception("No workout with such id.");
-        }
-
-        await RemoveAsync(workout);
+        await RemoveAsync(await FindDbAsync(workoutId));
     }
 
     public async Task UpdateWorkoutById(int workoutId, WorkoutRequest workoutRequest)
+    {
+        Mapper.Map(workoutRequest, await FindDbAsync(workoutId));
+        await SaveAsync();
+    }
+
+    private async Task<Workout> FindDbAsync(int workoutId)
     {
         var workout = await GetQueryable().SingleOrDefaultAsync(w => w.WorkoutId == workoutId);
 
@@ -58,8 +51,7 @@ public class WorkoutService(DatabaseContext databaseContext, IMapper mapper) : B
         {
             throw new Exception("No workout with such id.");
         }
-        
-        Mapper.Map(workoutRequest, workout);
-        await SaveAsync();
+
+        return workout;
     }
 }
