@@ -25,6 +25,11 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+
+});
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
