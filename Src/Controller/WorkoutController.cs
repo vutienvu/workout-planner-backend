@@ -24,42 +24,21 @@ public class WorkoutController(IWorkoutService workoutService) : ControllerBase
     [HttpGet("{workoutId}")]
     public async Task<IActionResult> GetWorkoutById(int workoutId)
     {
-        try
-        {
-            var workoutResponse = await workoutService.GetWorkoutById(workoutId);
-            return Ok(workoutResponse);
-        }
-        catch (Exception e)
-        {
-            return NotFound(e.Message);
-        }
+        var workoutResponse = await workoutService.GetWorkoutById(workoutId);
+        return Ok(workoutResponse);
     }
 
     [HttpDelete("{workoutId}")]
     public async Task<IActionResult> RemoveWorkoutById(int workoutId)
     {
-        try
-        {
-            await workoutService.DeleteWorkoutById(workoutId);
-            return NoContent();
-        }
-        catch (Exception e)
-        {
-            return NotFound(e.Message);
-        }
+        await workoutService.DeleteWorkoutById(workoutId);
+        return NoContent();
     }
 
     [HttpPut("{workoutId}")]
     public async Task<IActionResult> UpdateWorkoutById(int workoutId, [FromBody] WorkoutRequest workoutRequest)
     {
-        try
-        {
-            await workoutService.UpdateWorkoutById(workoutId, workoutRequest);
-            return NoContent();
-        }
-        catch (Exception e)
-        {
-            return NotFound(e.Message);
-        }
+        await workoutService.UpdateWorkoutById(workoutId, workoutRequest);
+        return NoContent();
     }
 }
