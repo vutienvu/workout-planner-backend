@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using WorkoutPlanner.Helper;
@@ -33,6 +34,9 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddFluentValidationAutoValidation(configuration =>
 {
     configuration.OverrideDefaultResultFactoryWith<RequestResultFactory>();
@@ -56,7 +60,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseExceptionHandler();
+
+app.UseRouting();
 app.UseCors();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();
