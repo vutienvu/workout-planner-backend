@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WorkoutPlanner.Controller;
 using WorkoutPlanner.Response;
+using WorkoutPlanner.Service.Exception;
 using WorkoutPlanner.Service.Interface;
 
 namespace WorkoutPlanner.Tests;
@@ -26,23 +28,23 @@ public class WorkoutControllerTests
         _mockWorkoutService.Setup(ws => ws.GetAllWorkouts()).ReturnsAsync(expectedWorkoutResponses);
         
         // Act
-        IActionResult actualResponse = await _workoutController.GetAllWorkouts();
+        var actualResponse = await _workoutController.GetAllWorkouts();
         
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(actualResponse);
+        var okResult = Assert.IsType<Ok<List<WorkoutResponse>>>(actualResponse);
         var returnedWorkouts = Assert.IsType<List<WorkoutResponse>>(okResult.Value);
         
         Assert.Equal(expectedWorkoutResponses.Count, returnedWorkouts.Count);
 
         for (int i = 0; i < expectedWorkoutResponses.Count; i++)
         {
-            Assert.Equal(expectedWorkoutResponses[i].WorkoutId, returnedWorkouts[i].WorkoutId);
-            Assert.Equal(expectedWorkoutResponses[i].Name, returnedWorkouts[i].Name);
+            Assert.Equal(returnedWorkouts[i].WorkoutId, expectedWorkoutResponses[i].WorkoutId);
+            Assert.Equal(returnedWorkouts[i].Name, expectedWorkoutResponses[i].Name);
         }
     }
 
     [Fact]
-    public async void GetWorkoutById_ValidWorkoutId_ReturnsOkWithWorkoutResponse()
+    public async void GetWorkoutById_ValidWorkoutId_ReturnsOkWithWorkoutDetailResponse()
     {
         // Arrange
         int validWorkoutId = 1;
@@ -54,29 +56,24 @@ public class WorkoutControllerTests
         var actualResponse = await _workoutController.GetWorkoutById(validWorkoutId);
         
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(actualResponse);
+        var okResult = Assert.IsType<Ok<WorkoutDetailResponse>>(actualResponse.Result);
         var returnedWorkout = Assert.IsType<WorkoutDetailResponse>(okResult.Value);
-        
-        Assert.Equal(expectedWorkoutDetailResponse.WorkoutId, returnedWorkout.WorkoutId);
-        Assert.Equal(expectedWorkoutDetailResponse.Name, returnedWorkout.Name);
-        Assert.Equal(expectedWorkoutDetailResponse.Exercises.Count, returnedWorkout.Exercises.Count);
+
+        Assert.Equal(returnedWorkout.WorkoutId, expectedWorkoutDetailResponse.WorkoutId);
+        Assert.Equal(returnedWorkout.Name, expectedWorkoutDetailResponse.Name);
+        Assert.Equal(returnedWorkout.Exercises.Count, expectedWorkoutDetailResponse.Exercises.Count);
     }
 
     [Fact]
-    public async void GetWorkoutById_InvalidWorkoutId_ReturnsNotFoundWithExceptionMessage()
+    public async void GetWorkoutById_InvalidWorkoutId_ThrowsWorkoutNotFoundException()
     {
         // Arrange
         int invalidWorkoutId = 1;
-        var expectedException = new Exception("No workout with such id.");
-
+        var expectedException = new WorkoutNotFoundException();
+    
         _mockWorkoutService.Setup(ws => ws.GetWorkoutById(invalidWorkoutId)).ThrowsAsync(expectedException);
         
-        // Act
-        var actualResponse = await _workoutController.GetWorkoutById(invalidWorkoutId);
-
-        var notFoundResult = Assert.IsType<NotFoundObjectResult>(actualResponse);
-        var actualExceptionMessage = Assert.IsType<string>(notFoundResult.Value);
-        
-        Assert.Equal(expectedException.Message, actualExceptionMessage);
+        // Act & Assert
+        await Assert.ThrowsAsync<WorkoutNotFoundException>(() => _workoutController.GetWorkoutById(invalidWorkoutId));
     }
 }
